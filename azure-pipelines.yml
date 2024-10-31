@@ -1,0 +1,48 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - frontend/**
+      - backend/**
+      - infra/**
+
+stages:
+  - stage: site
+    displayName: 'Frontend'
+    condition: |
+      and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), or(contains(variables['Build.Reason'], 'Manual'), contains(variables['Build.ChangedFiles'], 'frontend/')))
+    jobs:
+      - job: build-frontend
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - script: echo "Building Frontend..."
+            displayName: 'Build Frontend'
+          
+          
+
+  - stage: Backend
+    displayName: 'Backend Stage'
+    condition: |
+      and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), or(contains(variables['Build.Reason'], 'Manual'), contains(variables['Build.ChangedFiles'], 'backend/')))
+    jobs:
+      - job: BuildBackend
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - script: echo "Building Backend..."
+            displayName: 'Build Backend'
+
+  - stage: Infra
+    displayName: 'Infrastructure Stage'
+    condition: |
+      and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), or(contains(variables['Build.Reason'], 'Manual'), contains(variables['Build.ChangedFiles'], 'infra/')))
+    jobs:
+      - job: DeployInfra
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - script: echo "Deploying Infrastructure..."
+            displayName: 'Deploy Infrastructure'
