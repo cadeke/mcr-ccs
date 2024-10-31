@@ -51,6 +51,24 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
+// CORS Middleware
+// func corsMiddleware(next http.Handler) http.Handler {
+//     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+//         w.Header().Set("Access-Control-Allow-Origin", "*") // Allow all origins
+//         w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS") // Allow specific methods
+//         w.Header().Set("Access-Control-Allow-Headers", "Content-Type") // Allow specific headers
+//
+//         // Handle preflight requests
+//         if r.Method == http.MethodOptions {
+//             w.WriteHeader(http.StatusNoContent)
+//             return
+//         }
+//
+//         // Call the next handler
+//         next.ServeHTTP(w, r)
+//     })
+// }
+
 func main() {
 	// Overwritten by pipeline
 	con := "[CONNECTION STRING]"
