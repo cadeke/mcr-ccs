@@ -35,7 +35,7 @@ stages:
             inputs:
               sshEndpoint: 'ssh-azure-vm'
               contents: '$(System.DefaultWorkingDirectory)/site/dist/**'''
-              targetFolder: '/root/site'
+              targetFolder: '/home/azadmin/site'
               cleanTargetFolder: true
               cleanHiddenFilesInTarget: true
               readyTimeout: '20000'
