@@ -30,15 +30,6 @@ stages:
               command: "custom"
               workingDir: '$(System.DefaultWorkingDirectory)/site'
               customCommand: "run build"
-            
-          - task: CmdLine@2
-            inputs:
-              script: |
-                echo '$(System.DefaultWorkingDirectory)'
-                echo "LS"
-                ls 
-                echo "DIST"
-                ls '
 
           - task: CopyFilesOverSSH@0
             inputs:
