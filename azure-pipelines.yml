@@ -30,11 +30,20 @@ stages:
               command: "custom"
               workingDir:  '$(System.DefaultWorkingDirectory)/site'
               customCommand: "run build"
+            
+          - task: CmdLine@2
+            inputs:
+              script: |
+                echo '$(System.DefaultWorkingDirectory)'
+                echo "LS"
+                ls 
+                echo "DIST"
+                ls $(System.DefaultWorkingDirectory)/site/dist'
 
           - task: CopyFilesOverSSH@0
             inputs:
               sshEndpoint: 'ssh-azure-vm'
-              contents: '$(System.DefaultWorkingDirectory)/site/dist/**'''
+              contents: '$(System.DefaultWorkingDirectory)/site/dist/**'
               targetFolder: '/home/azadmin/site'
               cleanTargetFolder: true
               cleanHiddenFilesInTarget: true
