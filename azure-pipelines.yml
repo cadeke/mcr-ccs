@@ -43,7 +43,8 @@ stages:
           - task: CopyFilesOverSSH@0
             inputs:
               sshEndpoint: 'ssh-azure-vm'
-              contents: '$(System.DefaultWorkingDirectory)/site/dist/**'
+              # contents: '$(System.DefaultWorkingDirectory)/site/dist/**'
+              contents: 'site/dist/**'
               targetFolder: '/home/azadmin/site'
               cleanTargetFolder: true
               cleanHiddenFilesInTarget: true
