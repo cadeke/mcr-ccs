@@ -69,8 +69,6 @@ stages:
     displayName: "Infrastructure Stage"
     jobs:
       - job: DeployInfra
-        pool:
-          vmImage: "ubuntu-latest"
         steps:
           - script: echo "Deploying Infrastructure..."
             displayName: "Deploy Infrastructure"
