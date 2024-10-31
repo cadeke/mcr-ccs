@@ -8,6 +8,8 @@ trigger:
       - api/**
       - infra/**
 
+    
+
 stages:
   - stage: site
     displayName: "Frontend"
@@ -15,7 +17,7 @@ stages:
       - job: build_site
 
         pool:
-          vmImage: "ubuntu-latest"
+          name: SelfHostedPool
 
         steps:
           - task: Npm@1
