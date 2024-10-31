@@ -12,7 +12,6 @@ function App() {
   // States
   const [input, setInput] = useState("");
   const [data, setData] = useState<User>();
-  // const URL_DEV = "http://127.0.0.1:8080";
   const URL_PRD = "http://10.8.8.1:8080";
 
   // Functions
