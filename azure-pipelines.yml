@@ -15,11 +15,10 @@ stages:
   - stage: site
     displayName: "Frontend"
     jobs:
-      - job: build_site
+      - job: build_and_deploy_site
 
         steps:
           - checkout: self
-
 
           - task: Npm@1
             inputs:
@@ -43,21 +42,6 @@ stages:
           #     PathtoPublish: '$(System.DefaultWorkingDirectory)/site/dist'
           #     ArtifactName: "drop"
           #     publishLocation: "Container"
-
-      - job: deploy_site
-
-        steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: "drop"
-              targetPath: "$(Pipeline.Workspace)/drop"
-
-          - task: CopyFilesOverSSH@0
-            inputs:
-              sshEndpoint: "ssh-azure-vm"
-              contents: "$(Pipeline.Workspace)/drop/**"
-              targetFolder: "/root/site"
-              readyTimeout: "20000"
 
   - stage: Backend
     displayName: "Backend Stage"
