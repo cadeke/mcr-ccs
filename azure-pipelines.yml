@@ -38,7 +38,7 @@ stages:
                 echo "LS"
                 ls 
                 echo "DIST"
-                ls $(System.DefaultWorkingDirectory)/site/dist'
+                ls '$(System.DefaultWorkingDirectory)/site/dist'
 
           - task: CopyFilesOverSSH@0
             inputs:
