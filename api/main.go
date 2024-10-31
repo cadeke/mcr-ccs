@@ -4,9 +4,11 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
+	"os"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // User struct to hold user data
@@ -51,6 +53,21 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
+// Initialize logging to file
+func initLogging(logFile string) {
+	// Open or create the log file in append mode
+	file, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		log.Fatal("Failed to open log file:", err)
+	}
+
+	// Set output of log functions to the file
+	log.SetOutput(file)
+
+	// Optionally, set log format flags
+	log.SetFlags(log.LstdFlags | log.Lshortfile) // Include timestamp and file:line
+}
+
 // CORS Middleware
 // func corsMiddleware(next http.Handler) http.Handler {
 //     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -70,6 +87,9 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 // }
 
 func main() {
+	// Initialize logging to file
+	initLogging("logs.txt")
+
 	// Overwritten by pipeline
 	con := "[CONNECTION STRING]"
 	var err error
