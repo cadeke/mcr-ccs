@@ -2,11 +2,6 @@ trigger:
   branches:
     include:
       - main
-  paths:
-    include:
-      - frontend/**
-      - backend/**
-      - infra/**
 
 stages:
   - stage: site
