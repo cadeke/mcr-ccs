@@ -38,13 +38,13 @@ stages:
                 echo "LS"
                 ls 
                 echo "DIST"
-                ls '$(System.DefaultWorkingDirectory)/site/dist'
+                ls '
 
           - task: CopyFilesOverSSH@0
             inputs:
               sshEndpoint: 'ssh-azure-vm'
-              # contents: '$(System.DefaultWorkingDirectory)/site/dist/**'
-              contents: 'site/dist/**'
+              sourceFolder: '$(System.DefaultWorkingDirectory)/site/dist'
+              contents: '**'
               targetFolder: '/home/azadmin/site'
               cleanTargetFolder: true
               cleanHiddenFilesInTarget: true
