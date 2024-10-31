@@ -8,6 +8,8 @@ trigger:
       - api/**
       - infra/**
 
+pool:
+  name: SelfHostedPool
     
 
 stages:
@@ -16,10 +18,9 @@ stages:
     jobs:
       - job: build_site
 
-        pool:
-          name: SelfHostedPool
-
         steps:
+          - checkout: self
+
           - task: Npm@1
             inputs:
               command: "install"
