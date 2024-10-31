@@ -28,7 +28,7 @@ stages:
           - task: Npm@1
             inputs:
               command: "custom"
-              workingDir:  '$(System.DefaultWorkingDirectory)/site'
+              workingDir: '$(System.DefaultWorkingDirectory)/site'
               customCommand: "run build"
             
           - task: CmdLine@2
