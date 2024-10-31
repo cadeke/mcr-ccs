@@ -17,7 +17,8 @@ function App() {
   // Functions
   const getData = () => {
     const url = URL_PRD;
-    setData(undefined);
+
+    // setData(undefined);
     fetch(`${url}/user?q=${input}`)
       .then((response) => response.json())
       .then((json) => setData(json));
