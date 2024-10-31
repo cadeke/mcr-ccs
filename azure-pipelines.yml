@@ -11,8 +11,6 @@ trigger:
 stages:
   - stage: site
     displayName: "Frontend"
-    condition: |
-      and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), or(contains(variables['Build.Reason'], 'Manual'), contains(variables['Build.ChangedFiles'], 'site/')))
     jobs:
       - job: build_site
 
@@ -56,8 +54,6 @@ stages:
 
   - stage: Backend
     displayName: "Backend Stage"
-    condition: |
-      and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), or(contains(variables['Build.Reason'], 'Manual'), contains(variables['Build.ChangedFiles'], 'api/')))
     jobs:
       - job: BuildBackend
         pool:
@@ -68,8 +64,6 @@ stages:
 
   - stage: Infra
     displayName: "Infrastructure Stage"
-    condition: |
-      and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), or(contains(variables['Build.Reason'], 'Manual'), contains(variables['Build.ChangedFiles'], 'infra/')))
     jobs:
       - job: DeployInfra
         pool:
