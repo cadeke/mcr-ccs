@@ -10,7 +10,6 @@ trigger:
 
 pool:
   name: SelfHostedPool
-    
 
 stages:
   - stage: site
@@ -21,26 +20,25 @@ stages:
         steps:
           - checkout: self
 
+
           - task: Npm@1
             inputs:
-              command: "install"
+              command: 'install'
+              workingDir: '$(System.DefaultWorkingDirectory)/site'
 
           - task: Npm@1
             inputs:
               command: "custom"
-              workingDir: "/site"
+              workingDir:  '$(System.DefaultWorkingDirectory)/site'
               customCommand: "run build"
 
           - task: PublishBuildArtifacts@1
             inputs:
-              PathtoPublish: "/site/dist"
+              PathtoPublish: '$(System.DefaultWorkingDirectory)/site/dist'
               ArtifactName: "drop"
               publishLocation: "Container"
 
       - job: deploy_site
-
-        pool:
-          vmImage: "ubuntu-latest"
 
         steps:
           - task: DownloadPipelineArtifact@2
@@ -59,8 +57,6 @@ stages:
     displayName: "Backend Stage"
     jobs:
       - job: BuildBackend
-        pool:
-          vmImage: "ubuntu-latest"
         steps:
           - script: echo "Building Backend..."
             displayName: "Build Backend"
