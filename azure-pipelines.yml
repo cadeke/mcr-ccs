@@ -33,10 +33,14 @@ stages:
 
           - task: CopyFilesOverSSH@0
             inputs:
-              sshEndpoint: "ssh-azure-vm"
-              contents: $(System.DefaultWorkingDirectory)/site/dist/**'
-              targetFolder: "/root/site"
-              readyTimeout: "20000"
+              sshEndpoint: 'ssh-azure-vm'
+              contents: '$(System.DefaultWorkingDirectory)/site/dist/**'''
+              targetFolder: '/root/site'
+              cleanTargetFolder: true
+              cleanHiddenFilesInTarget: true
+              readyTimeout: '20000'
+              failOnEmptySource: true
+
           # - task: PublishBuildArtifacts@1
           #   inputs:
           #     PathtoPublish: '$(System.DefaultWorkingDirectory)/site/dist'
