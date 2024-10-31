@@ -32,11 +32,17 @@ stages:
               workingDir:  '$(System.DefaultWorkingDirectory)/site'
               customCommand: "run build"
 
-          - task: PublishBuildArtifacts@1
+          - task: CopyFilesOverSSH@0
             inputs:
-              PathtoPublish: '$(System.DefaultWorkingDirectory)/site/dist'
-              ArtifactName: "drop"
-              publishLocation: "Container"
+              sshEndpoint: "ssh-azure-vm"
+              contents: $(System.DefaultWorkingDirectory)/site/dist/**'
+              targetFolder: "/root/site"
+              readyTimeout: "20000"
+          # - task: PublishBuildArtifacts@1
+          #   inputs:
+          #     PathtoPublish: '$(System.DefaultWorkingDirectory)/site/dist'
+          #     ArtifactName: "drop"
+          #     publishLocation: "Container"
 
       - job: deploy_site
 
