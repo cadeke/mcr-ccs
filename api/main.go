@@ -23,6 +23,7 @@ var db *sql.DB
 
 // Health check handler for /status route
 func getStatus(w http.ResponseWriter, r *http.Request) {
+	log.Printf("Request received: %s %s from %s", r.Method, r.URL.Path, r.RemoteAddr)
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprintln(w, `{"status": "ok"}`)
 }
@@ -41,6 +42,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if err == sql.ErrNoRows {
 			http.Error(w, "User not found", http.StatusNotFound)
+			log.Printf("User not found: %s", query)
 		} else {
 			http.Error(w, "Server error", http.StatusInternalServerError)
 			log.Println("Database query error:", err)
@@ -51,6 +53,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 	// Respond with user data as JSON
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(user)
+	log.Printf("User retrieved: %s", user.Name)
 }
 
 // Initialize logging to file
