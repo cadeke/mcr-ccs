@@ -94,7 +94,8 @@ func main() {
 	initLogging("logs.txt")
 
 	// Overwritten by pipeline
-	con := "[CONNECTION STRING]"
+	con := "CONNECTION STRING"
+
 	var err error
 	db, err = sql.Open("mysql", con)
 	if err != nil {
