@@ -2,11 +2,11 @@ trigger:
   branches:
     include:
       - main
-  paths:
-    include:
-      - site/**
-      - api/**
-      - infra/**
+  # paths:
+  #   include:
+  #     - site/**
+  #     - api/**
+  #     - infra/**
 
 pool:
   name: SelfHostedPool
@@ -27,12 +27,14 @@ stages:
             inputs:
               command: "install"
               workingDir: "$(System.DefaultWorkingDirectory)/site"
+            displayName: "Install dependencies"
 
           - task: Npm@1
             inputs:
               command: "custom"
               workingDir: "$(System.DefaultWorkingDirectory)/site"
               customCommand: "run build"
+            displayName: "Build site"
 
           - task: CopyFilesOverSSH@0
             inputs:
@@ -44,6 +46,7 @@ stages:
               cleanHiddenFilesInTarget: true
               failOnEmptySource: true
               readyTimeout: "20000"
+            displayName: "Deploy site"
 
   - stage: api
     displayName: backend
@@ -55,14 +58,19 @@ stages:
           - task: GoTool@0
             inputs:
               version: "1.10"
+            displayName: "Install Go"
 
           - script: |
               sed 's|CONNECTION_STRING|$(DB_CONNECTION_STRING)|' -i api/main.go
             displayName: "Replace connection string"
 
           - script: |
+              go mod tidy
+            displayName: "Install dependencies"
+
+          - script: |
               go build ./api/main.go
-            displayName: "Build app"
+            displayName: "Build api"
 
           - task: CopyFilesOverSSH@0
             inputs:
@@ -74,11 +82,12 @@ stages:
               cleanHiddenFilesInTarget: true
               readyTimeout: "20000"
               failOnEmptySource: true
+            displayName: "Deploy api"
 
-  - stage: Infra
-    displayName: "Infrastructure Stage"
+  - stage: infra
+    displayName: infra
     jobs:
-      - job: DeployInfra
+      - job: deploy_infra
         steps:
           - script: echo "Deploying Infrastructure..."
-            displayName: "Deploy Infrastructure"
+            displayName: "Deploy infrastructure"
