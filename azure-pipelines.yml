@@ -95,7 +95,7 @@ stages:
           - checkout: none
 
           - script: |
-              python3 -m pip install --user ansible-core
+              sudo apt install ansible-core
             displayName: "Install Ansible"
 
           - script: |
