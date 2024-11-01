@@ -1,0 +1,12 @@
+server {
+    listen 80;
+    server_name 4.180.247.36;
+
+    root /home/azadmin/site;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+

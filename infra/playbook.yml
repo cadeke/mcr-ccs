@@ -1,0 +1,44 @@
+- name: Configure webserver
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: Install NGINX
+      ansible.builtin.package:
+        name: nginx
+        state: present
+
+    - name: Create NGINX server block
+      ansible.builtin.template:
+        src: ccs_site.j2
+        dest: /etc/nginx/sites-available/ccs_site
+        mode: "0644"
+
+    - name: Enable the site by creating a symbolic link
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/ccs_site
+        dest: /etc/nginx/sites-enabled/ccs_site
+        state: link
+
+    - name: Set permissions for site directory
+      ansible.builtin.file:
+        path: /home/azadmin/site
+        owner: www-data
+        group: www-data
+        mode: "0755"
+        recurse: yes
+
+    - name: Test NGINX configuration
+      ansible.builtin.command: nginx -t
+      register: nginx_test
+      ignore_errors: yes
+
+    - name: Fail if NGINX configuration test fails
+      ansible.builtin.fail:
+        msg: "NGINX configuration test failed."
+      when: nginx_test.rc != 0
+
+    - name: Restart NGINX
+      ansible.builtin.service:
+        name: nginx
+        state: restarted
