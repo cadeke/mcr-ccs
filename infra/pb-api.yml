@@ -8,4 +8,5 @@
         mode: u+x
 
     - name: Start api
-      ansible.builtin.command: /root/api/main
+      ansible.builtin.shell: /root/api/main > /dev/null 2>&1 &
+      poll: 0
