@@ -30,12 +30,29 @@
         path: /home/azadmin
         mode: "0755"
 
-    - name: Set permissions for site directory
+    - name: Ensure webgroup exists
+      ansible.builtin.group:
+        name: webgroup
+        state: present
+
+    - name: Add www-data user to webgroup
+      ansible.builtin.user:
+        name: www-data
+        groups: webgroup
+        append: yes
+
+    - name: Add azadmin user to webgroup
+      ansible.builtin.user:
+        name: azadmin
+        groups: webgroup
+        append: yes
+
+    - name: Set group ownership and permissions on site directory
       ansible.builtin.file:
         path: /home/azadmin/site
         owner: www-data
-        group: www-data
-        mode: "0755"
+        group: webgroup
+        mode: "2775"
         recurse: yes
 
     - name: Test NGINX configuration
