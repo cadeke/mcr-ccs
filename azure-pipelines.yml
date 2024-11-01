@@ -25,25 +25,25 @@ stages:
 
           - task: Npm@1
             inputs:
-              command: 'install'
-              workingDir: '$(System.DefaultWorkingDirectory)/site'
+              command: "install"
+              workingDir: "$(System.DefaultWorkingDirectory)/site"
 
           - task: Npm@1
             inputs:
               command: "custom"
-              workingDir: '$(System.DefaultWorkingDirectory)/site'
+              workingDir: "$(System.DefaultWorkingDirectory)/site"
               customCommand: "run build"
 
           - task: CopyFilesOverSSH@0
             inputs:
-              sshEndpoint: 'ssh-azure-vm'
-              sourceFolder: '$(System.DefaultWorkingDirectory)/site/dist'
-              contents: '**'
-              targetFolder: '/home/azadmin/site'
+              sshEndpoint: "ssh-azure-vm"
+              sourceFolder: "$(System.DefaultWorkingDirectory)/site/dist"
+              contents: "**"
+              targetFolder: "/home/azadmin/site"
               cleanTargetFolder: true
               cleanHiddenFilesInTarget: true
               failOnEmptySource: true
-              readyTimeout: '20000'
+              readyTimeout: "20000"
 
   - stage: api
     displayName: backend
@@ -54,27 +54,26 @@ stages:
 
           - task: GoTool@0
             inputs:
-              version: '1.10'
-              
+              version: "1.10"
+
           - script: |
-              sed -i 's/[CONNECTION STRING]/($DB_CONNECTION_STRING)/g' ./api/main.go
-            displayName: 'Replace connection string'
-          
+              sed 's/CONNECTION_STRING/$(DB_CONNECTION_STRING)/' -i api/main.go
+            displayName: "Replace connection string"
+
           - script: |
               go build ./api/main.go
-            displayName: 'Build app'
+            displayName: "Build app"
 
           - task: CopyFilesOverSSH@0
             inputs:
-              sshEndpoint: 'ssh-do-vm'
-              sourceFolder: '$(System.DefaultWorkingDirectory)/api/'
-              contents: 'main'
-              targetFolder: '/root/api'
+              sshEndpoint: "ssh-do-vm"
+              sourceFolder: "$(System.DefaultWorkingDirectory)/api/"
+              contents: "main"
+              targetFolder: "/root/api"
               cleanTargetFolder: true
               cleanHiddenFilesInTarget: true
-              readyTimeout: '20000'
+              readyTimeout: "20000"
               failOnEmptySource: true
-
 
   - stage: Infra
     displayName: "Infrastructure Stage"
