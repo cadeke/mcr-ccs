@@ -65,8 +65,8 @@ stages:
             displayName: "Replace connection string"
 
           - script: |
+              cd api
               go mod tidy
-            workingDir: "$(System.DefaultWorkingDirectory)/api"
             displayName: "Install dependencies"
 
           - script: |
