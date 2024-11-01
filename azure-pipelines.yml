@@ -66,6 +66,7 @@ stages:
 
           - script: |
               go mod tidy
+            workingDir: "$(System.DefaultWorkingDirectory)/api"
             displayName: "Install dependencies"
 
           - script: |
