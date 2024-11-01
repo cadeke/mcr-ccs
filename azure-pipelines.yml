@@ -65,12 +65,13 @@ stages:
             displayName: "Replace connection string"
 
           - script: |
-              cd api
+              cd api/
               go mod tidy
             displayName: "Install dependencies"
 
           - script: |
-              go build ./api/main.go
+              cd api/
+              go build main.go
             displayName: "Build api"
 
           - task: CopyFilesOverSSH@0
