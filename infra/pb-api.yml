@@ -1,0 +1,11 @@
+- name: Configure api
+  hosts: api
+
+  tasks:
+    - name: Set permissions
+      ansible.builtin.file:
+        path: /root/api/main
+        mode: u+x
+
+    - name: Start api
+      ansible.builtin.command: /root/api/main

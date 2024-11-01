@@ -1,5 +1,5 @@
 - name: Configure webserver
-  hosts: webservers
+  hosts: site
   become: true
 
   tasks:
