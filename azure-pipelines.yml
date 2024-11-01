@@ -94,13 +94,7 @@ stages:
         steps:
           - checkout: none
 
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: "3.12.3"
-            displayName: "Use Python 3"
-
           - script: |
-              python -m pip install --upgrade pip
               pip install ansible
             displayName: "Install Ansible"
 
