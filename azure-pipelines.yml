@@ -57,7 +57,7 @@ stages:
 
           - task: GoTool@0
             inputs:
-              version: "1.10"
+              version: "1.23.2"
             displayName: "Install Go"
 
           - script: |
