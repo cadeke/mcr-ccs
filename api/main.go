@@ -71,23 +71,22 @@ func initLogging(logFile string) {
 	log.SetFlags(log.LstdFlags | log.Lshortfile) // Include timestamp and file:line
 }
 
-// CORS Middleware
-// func corsMiddleware(next http.Handler) http.Handler {
-//     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-//         w.Header().Set("Access-Control-Allow-Origin", "*") // Allow all origins
-//         w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS") // Allow specific methods
-//         w.Header().Set("Access-Control-Allow-Headers", "Content-Type") // Allow specific headers
-//
-//         // Handle preflight requests
-//         if r.Method == http.MethodOptions {
-//             w.WriteHeader(http.StatusNoContent)
-//             return
-//         }
-//
-//         // Call the next handler
-//         next.ServeHTTP(w, r)
-//     })
-// }
+func allowCors(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")             // Allow all origins
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS") // Allow specific methods
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type") // Allow specific headers
+
+		// Handle preflight requests
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		// Call the next handler
+		next.ServeHTTP(w, r)
+	})
+}
 
 func main() {
 	// Initialize logging to file
@@ -108,12 +107,18 @@ func main() {
 		log.Fatal("Failed to ping database:", err)
 	}
 
-	// Define routes
-	http.HandleFunc("/status", getStatus)
-	http.HandleFunc("/user", getUser)
+	// Define routes with CORS middleware applied
+	mux := http.NewServeMux()
+	mux.HandleFunc("/status", getStatus)
+	mux.HandleFunc("/user", getUser)
+
+	// Wrap routes with CORS middleware
+	handler := allowCors(mux)
 
 	// Start server
 	port := "8080"
-	fmt.Printf("Server running on http://localhost:%s\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Printf("Server starting on port %s", port)
+	if err := http.ListenAndServe(":"+port, handler); err != nil {
+		log.Fatal("Server failed:", err)
+	}
 }
