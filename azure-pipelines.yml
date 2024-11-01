@@ -99,5 +99,6 @@ stages:
             displayName: "Install Ansible"
 
           - script: |
+              cd infra/
               ansible-playbook playbook.yml -i inventory.yml
             displayName: "Run Ansible Playbook"
