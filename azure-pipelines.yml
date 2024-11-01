@@ -12,7 +12,7 @@ pool:
   name: SelfHostedPool
 
 variables:
-  DB_CONNECTION_STRING: $(PASSWORD) 
+  DB_CONNECTION_STRING: $(CONNECTION_STRING)
 
 stages:
   - stage: site
@@ -57,7 +57,7 @@ stages:
               version: '1.10'
               
           - script: |
-              sed -i 's/[CONNECTION STRING]/'($DB_CONNECTION_STRING)'/g' ./api/main.go
+              sed -i 's/[CONNECTION STRING]/($DB_CONNECTION_STRING)/g' ./api/main.go
             displayName: 'Replace connection string'
           
           - script: |
