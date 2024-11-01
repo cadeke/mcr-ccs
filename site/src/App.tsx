@@ -21,7 +21,8 @@ function App() {
     // setData(undefined);
     fetch(`${url}/user?q=${input}`)
       .then((response) => response.json())
-      .then((json) => setData(json));
+      .then((json) => setData(json))
+      .catch((error) => console.log("ERROR", error));
   };
 
   return (
