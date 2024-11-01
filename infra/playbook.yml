@@ -20,6 +20,16 @@
         dest: /etc/nginx/sites-enabled/ccs_site
         state: link
 
+    - name: Set permissions for /home directory
+      ansible.builtin.file:
+        path: /home
+        mode: "0755"
+
+    - name: Set permissions for /home/azadmin directory
+      ansible.builtin.file:
+        path: /home/azadmin
+        mode: "0755"
+
     - name: Set permissions for site directory
       ansible.builtin.file:
         path: /home/azadmin/site
