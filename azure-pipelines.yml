@@ -11,9 +11,12 @@ trigger:
 pool:
   name: SelfHostedPool
 
+variables:
+  DB_CONNECTION_STRING: $(PASSWORD) 
+
 stages:
   - stage: site
-    displayName: "Frontend"
+    displayName: "frontend"
     jobs:
       - job: build_and_deploy_site
 
@@ -39,22 +42,39 @@ stages:
               targetFolder: '/home/azadmin/site'
               cleanTargetFolder: true
               cleanHiddenFilesInTarget: true
+              failOnEmptySource: true
+              readyTimeout: '20000'
+
+  - stage: api
+    displayName: backend
+    jobs:
+      - job: build_and_deploy_api
+        steps:
+          - checkout: self
+
+          - task: GoTool@0
+            inputs:
+              version: '1.10'
+              
+          - script: |
+              sed -i 's/[CONNECTION STRING]/'($DB_CONNECTION_STRING)'/g' ./api/main.go
+            displayName: 'Replace connection string'
+          
+          - script: |
+              go build ./api/main.go
+            displayName: 'Build app'
+
+          - task: CopyFilesOverSSH@0
+            inputs:
+              sshEndpoint: 'ssh-do-vm'
+              sourceFolder: '$(System.DefaultWorkingDirectory)/api/'
+              contents: 'main'
+              targetFolder: '/root/api'
+              cleanTargetFolder: true
+              cleanHiddenFilesInTarget: true
               readyTimeout: '20000'
               failOnEmptySource: true
 
-          # - task: PublishBuildArtifacts@1
-          #   inputs:
-          #     PathtoPublish: '$(System.DefaultWorkingDirectory)/site/dist'
-          #     ArtifactName: "drop"
-          #     publishLocation: "Container"
-
-  - stage: Backend
-    displayName: "Backend Stage"
-    jobs:
-      - job: BuildBackend
-        steps:
-          - script: echo "Building Backend..."
-            displayName: "Build Backend"
 
   - stage: Infra
     displayName: "Infrastructure Stage"
