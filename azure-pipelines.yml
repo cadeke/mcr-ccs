@@ -57,7 +57,7 @@ stages:
               version: "1.10"
 
           - script: |
-              sed 's/CONNECTION_STRING/$(DB_CONNECTION_STRING)/' -i api/main.go
+              sed 's|CONNECTION_STRING|$(DB_CONNECTION_STRING)|' -i api/main.go
             displayName: "Replace connection string"
 
           - script: |
