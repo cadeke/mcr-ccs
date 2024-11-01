@@ -95,7 +95,7 @@ stages:
           - checkout: none
 
           - script: |
-              sudo apt install ansible-core
+              sudo apt install ansible-core -y
             displayName: "Install Ansible"
 
           - script: |
