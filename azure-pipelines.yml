@@ -92,9 +92,11 @@ stages:
       - job: deploy_infra
         displayName: "Deploy infrastructure"
         steps:
+          - checkout: none
+
           - task: UsePythonVersion@0
             inputs:
-              versionSpec: "3.x"
+              versionSpec: "3.12.3"
             displayName: "Use Python 3"
 
           - script: |
