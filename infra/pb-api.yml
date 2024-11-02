@@ -2,11 +2,36 @@
   hosts: api
 
   tasks:
-    - name: Set permissions
+    - name: Set executable permissions
       ansible.builtin.file:
         path: /root/api/main
-        mode: u+x
+        mode: "0755"
 
-    - name: Start api
-      ansible.builtin.shell: /root/api/main > /dev/null 2>&1 &
-      poll: 0
+    - name: Create systemd service for CCS API
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/ccs-api.service
+        content: |
+          [Unit]
+          Description=CCS API Service
+          After=network.target
+
+          [Service]
+          ExecStart=/root/api/main
+          Restart=always
+          User=root
+          WorkingDirectory=/root/api
+          StandardOutput=null
+          StandardError=journal
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Enable and start the CCS API service
+      ansible.builtin.systemd:
+        name: ccs-api
+        enabled: yes
+        state: started

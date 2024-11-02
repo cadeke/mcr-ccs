@@ -11,18 +11,23 @@ function App() {
 
   // States
   const [input, setInput] = useState("");
-  const [data, setData] = useState<User>();
+  const [apiData, setApiData] = useState<User>();
   const URL_PRD = "http://10.8.8.1:8080";
 
   // Functions
-  const getData = () => {
+  const getData = async () => {
     const url = URL_PRD;
 
     // setData(undefined);
-    fetch(`${url}/user?q=${input}`)
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => console.log("ERROR", error));
+    try {
+      console.log("Start api call");
+      const res = await fetch(`${url}/user?q=${input}`);
+      const resData = await res.json();
+      console.log("Got data", resData);
+      setApiData(resData);
+    } catch (err) {
+      console.log("Got error", err);
+    }
   };
 
   return (
@@ -35,7 +40,7 @@ function App() {
           onChange={(e) => setInput(e.target.value)}
         />
         <button onClick={() => getData()}>Search</button>
-        {data ? (
+        {apiData ? (
           <div>
             <table>
               <thead>
@@ -45,9 +50,9 @@ function App() {
               </thead>
               <tbody>
                 <tr>
-                  <td>{data?.id}</td>
-                  <td>{data?.name}</td>
-                  <td>{data?.email}</td>
+                  <td>{apiData?.id}</td>
+                  <td>{apiData?.name}</td>
+                  <td>{apiData?.email}</td>
                 </tr>
               </tbody>
             </table>
