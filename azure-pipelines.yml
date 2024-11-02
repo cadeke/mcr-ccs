@@ -99,10 +99,6 @@ stages:
 
           - script: |
               cd infra/
-              echo "LIST"
-              ls
-              echo "LIST PB"
-              ls playbooks/
               ansible-playbook playbooks/pb-site.yml -i inventory.yml
             displayName: "Run website playbook"
 
