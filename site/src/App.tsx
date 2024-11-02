@@ -45,7 +45,7 @@ function App() {
           onChange={(e) => setInput(e.target.value)}
         />
         <button onClick={() => getData()}>Search</button>
-        {true ? (
+        {apiData ? (
           <div className="Table">
             <table>
               <thead>
