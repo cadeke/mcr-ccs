@@ -18,14 +18,15 @@ type User struct {
 	Email string `json:"email"`
 }
 
+const version = "1.0.0"
+
 // Database connection (global for simplicity)
 var db *sql.DB
 
 // Health check handler for /status route
 func getStatus(w http.ResponseWriter, r *http.Request) {
-	log.Printf("Request received: %s %s from %s", r.Method, r.URL.Path, r.RemoteAddr)
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintln(w, `{"status": "ok"}`)
+	fmt.Fprintln(w, `{"status": "ok", "version": "`+version+`"}`)
 }
 
 // User handler for /user route with a query parameter ?q=
@@ -73,6 +74,9 @@ func initLogging(logFile string) {
 
 func allowCors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Log request for debugging
+		log.Printf("Received %s request for %s\n", r.Method, r.URL)
+
 		w.Header().Set("Access-Control-Allow-Origin", "*")             // Allow all origins
 		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS") // Allow specific methods
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type") // Allow specific headers

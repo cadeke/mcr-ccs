@@ -90,7 +90,6 @@ stages:
     displayName: infra
     jobs:
       - job: deploy_infra
-        displayName: "Deploy infrastructure"
         steps:
           - checkout: none
 
