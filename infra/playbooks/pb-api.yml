@@ -10,7 +10,7 @@
 
     - name: Create systemd service for CCS API
       ansible.builtin.template:
-        src: resources/ccs_api.j2
+        src: ../resources/ccs_api.j2
         dest: /etc/systemd/system/ccs-api.service
       notify: Reload systemd daemon # Notify the handler to reload the daemon if the service file changes
 
