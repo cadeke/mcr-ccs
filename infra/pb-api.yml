@@ -34,4 +34,4 @@
       ansible.builtin.systemd:
         name: ccs-api
         enabled: yes
-        state: restared
+        state: restarted
