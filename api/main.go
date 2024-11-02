@@ -75,7 +75,7 @@ func initLogging(logFile string) {
 func allowCors(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Log request for debugging
-		log.Printf("Received %s request for %s\n", r.Method, r.URL)
+		log.Printf("Received %s request for %s from %s\n", r.Method, r.URL, r.RemoteAddr)
 
 		w.Header().Set("Access-Control-Allow-Origin", "*")             // Allow all origins
 		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS") // Allow specific methods

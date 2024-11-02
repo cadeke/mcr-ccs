@@ -6,7 +6,22 @@ server {
     index index.html;
 
     location / {
+        # Serve static files
         try_files $uri $uri/ /index.html =404;
+        
+        # CORS Headers
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+        add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization';
+
+        # Handle preflight OPTIONS requests
+        if ($request_method = 'OPTIONS') {
+            add_header 'Access-Control-Allow-Origin' '*';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Headers' 'Content-Type, Authorization';
+            add_header 'Content-Length' 0;
+            add_header 'Content-Type' 'text/plain';
+            return 204;
+        }
     }
 }
-

@@ -21,12 +21,19 @@ function App() {
     // setData(undefined);
     try {
       console.log("Start api call");
-      const res = await fetch(`${url}/user?q=${input}`);
+      const res = await fetch(`${url}/user?q=${input}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       const resData = await res.json();
       console.log("Got data", resData);
       setApiData(resData);
     } catch (err) {
       console.log("Got error", err);
+    } finally {
+      console.log("End api call");
     }
   };
 
