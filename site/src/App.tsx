@@ -46,7 +46,7 @@ function App() {
         />
         <button onClick={() => getData()}>Search</button>
         {apiData ? (
-          <div>
+          <div className="Table">
             <table>
               <thead>
                 <th>ID</th>
