@@ -10,7 +10,7 @@
 
     - name: Create NGINX server block
       ansible.builtin.template:
-        src: ccs_site.j2
+        src: ../resources/ccs_site.j2
         dest: /etc/nginx/sites-available/ccs_site
         mode: "0644"
 

@@ -1,0 +1,14 @@
+[Unit]
+Description=CCS API Service
+After=network.target
+
+[Service]
+ExecStart=/root/api/main
+Restart=always
+User=root
+WorkingDirectory=/root/api
+StandardOutput=null
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
