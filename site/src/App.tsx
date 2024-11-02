@@ -12,16 +12,14 @@ function App() {
   // States
   const [input, setInput] = useState("");
   const [apiData, setApiData] = useState<User>();
-  const URL_PRD = "http://10.8.8.1:8080";
 
   // Functions
   const getData = async () => {
-    const url = URL_PRD;
-
+    const url = "/api/user";
     // setData(undefined);
     try {
       console.log("Start api call");
-      const res = await fetch(`${url}/user?q=${input}`, {
+      const res = await fetch(`${url}?q=${input}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
