@@ -15,8 +15,8 @@ function App() {
 
   // Functions
   const getData = async () => {
+    setApiData(undefined);
     const url = "/api/user";
-    // setData(undefined);
     try {
       console.log("Start api call");
       const res = await fetch(`${url}?q=${input}`, {
@@ -45,12 +45,12 @@ function App() {
           onChange={(e) => setInput(e.target.value)}
         />
         <button onClick={() => getData()}>Search</button>
-        {apiData ? (
+        {true ? (
           <div className="Table">
             <table>
               <thead>
                 <th>ID</th>
-                <th>Username</th>
+                <th>Name</th>
                 <th>Email</th>
               </thead>
               <tbody>
